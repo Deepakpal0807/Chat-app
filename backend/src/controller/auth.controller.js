@@ -69,6 +69,7 @@ export const login= async(req,res)=>{
             return res.status(400).json({message:"Password should be at least 6 characters long"})
         }
         const user=await User.findOne({email});
+        console.log(user);
         if(!user){
              return res.status(400).json({message:"Invalid email"});
         }
@@ -78,7 +79,9 @@ export const login= async(req,res)=>{
         if(!pass){
             return res.status(400).json({message:"Invalid password"});
         }
-        
+        const token=await createtoken(user._id,res);
+        console.log("user is valid");
+        console.log(token);
         return  res.status(200).json({message:"User logged in successfully",token:token});
 
         

@@ -11,7 +11,7 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
-  const { login, isLoggingIn } = useAuthStore();
+  const { login, islogginin } = useAuthStore();
   const navigate = useNavigate();
   
 
@@ -90,8 +90,8 @@ const LoginPage = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary w-full" disabled={isLoggingIn}>
-              {isLoggingIn ? (
+            <button type="submit" className="btn btn-primary w-full" disabled={islogginin}>
+              {islogginin ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
                   Loading...

@@ -7,6 +7,7 @@ export const  useAuthStore=create((set)=>({
     issignup:false,
     issigningup:false,
     islogin:false,
+    isloggingin:false,
     isupdatingproflie:false,
     ischeckingauth:true,
  
