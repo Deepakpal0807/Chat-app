@@ -17,8 +17,9 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    login(formData);
-    navigate("/");
+    await login(formData);
+    console.log("Redirect to home page");
+    setTimeout(() => window.location.href="/login", 1500);
 
   };
 
@@ -97,7 +98,7 @@ const LoginPage = () => {
                   Loading...
                 </>
               ) : (
-                "Sign in"
+                "Log in"
               )}
             </button>
           </form>

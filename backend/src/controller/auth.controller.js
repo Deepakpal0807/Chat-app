@@ -5,7 +5,7 @@ import cloudinary from "../utils/cloudinary.js";
  
  export const signup= async(req,res)=>{
     const {name,email,password}=req.body;
-    console.log(req.body);
+    // console.log(req.body);
     try {
         if(!name || !email || !password){
             return res.status(400).json({message:"All field are required"});
@@ -13,9 +13,9 @@ import cloudinary from "../utils/cloudinary.js";
         if(password.length < 6){
         return res.status(400).json({message:" Password must be atleast of size 6"});
         }
-        console.log(name);
-        console.log(email);
-        console.log(password);
+        // console.log(name);
+        // console.log(email);
+        // console.log(password);
 
         const x=await User.findOne({email});
         if(x){
@@ -24,7 +24,7 @@ import cloudinary from "../utils/cloudinary.js";
         
         const salt= await bcrypt.genSalt(10);
         const hashpassword=await bcrypt.hash(password,salt);
-        console.log(hashpassword);
+        // console.log(hashpassword);
         const user=new User({
             name,
             email,
@@ -60,7 +60,7 @@ import cloudinary from "../utils/cloudinary.js";
 };
 export const login= async(req,res)=>{
     const {email,password}=req.body;
-    console.log(req.body);
+    // console.log(req.body);
     try {
         if(!email || !password){
             return res.status(400).json({message:"Please enter both email and password"});
@@ -69,7 +69,7 @@ export const login= async(req,res)=>{
             return res.status(400).json({message:"Password should be at least 6 characters long"})
         }
         const user=await User.findOne({email});
-        console.log(user);
+        // console.log(user);
         if(!user){
              return res.status(400).json({message:"Invalid email"});
         }
@@ -80,8 +80,8 @@ export const login= async(req,res)=>{
             return res.status(400).json({message:"Invalid password"});
         }
         const token=await createtoken(user._id,res);
-        console.log("user is valid");
-        console.log(token);
+        // console.log("user is valid");
+        // console.log(token);
         return  res.status(200).json({message:"User logged in successfully",token:token});
 
         
@@ -111,6 +111,7 @@ export const updateprofilephoto=async(req,res)=>{
  try {
     const id=req.user._id;
     const {profilepic}=req.body;
+    console.log(profilepic);
     if(!profilepic){
         return res.status(400).json({message:"Profile picture is required"});
     }

@@ -2,7 +2,9 @@ import {create} from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import {toast} from 'react-toastify'
 
+
 export const  useAuthStore=create((set)=>({
+    
     authuser:null,
     issignup:false,
     issigningup:false,
@@ -10,6 +12,7 @@ export const  useAuthStore=create((set)=>({
     isloggingin:false,
     isupdatingproflie:false,
     ischeckingauth:true,
+    onlineuser:[],
  
     checkAuth: async () => {
         try {
@@ -37,6 +40,7 @@ export const  useAuthStore=create((set)=>({
             const res = await axiosInstance.post("/auth/signup",{name,email,password});
             console.log("Signup response:", res.data);
            toast.success("Account created successfully");
+        //    setTimeout(() => navigate("/"), 1500);
             
         } catch (error) {
             toast.error(error.response.data.message);
@@ -63,6 +67,40 @@ export const  useAuthStore=create((set)=>({
             set({islogginin:false});
         }
     }
+    ,
+    logout:async()=>{
+         try {
+            const res = await axiosInstance.post("/auth/logout");
+            console.log("Logout response:", res.data);
+            toast.success("Logged out successfully");
+            // setTimeout(() => navigate("/login"), 1500); 
+            
+         } catch (error) {
+            toast.error(error.response.data.message);            
+         }
+
+    },
+    updateprofile:async(data)=>{
+        set({isupdatingproflie:true});
+        
+           try {
+            console.log(data);
+            const res = await axiosInstance.put("/auth/updateprofilephoto",data);
+            console.log("Update profile response:", res.data);
+            set({authuser:res.data});
+            toast.success("Profile updated successfully");
+            // setTimeout(() => navigate("/"), 1500);
+
+            
+           } catch (error) {
+            toast.error(error.response.data.message);
+            
+           }
+           finally{
+            set({isupdatingproflie:false});
+
+           }
+    },
 
 
     

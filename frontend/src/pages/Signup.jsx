@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import AuthImagePattern from "../Component/AuthImagePattern";
 import {toast} from "react-hot-toast";
+import {useNavigate } from "react-router-dom"
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +16,7 @@ const SignUpPage = () => {
   });
 
   const { signup, issigningup } = useAuthStore();
+  const navigate = useNavigate()
 
   const validateForm = () => {
     if (!formData.fullName.trim()) return toast.error("Full name is required");
@@ -34,6 +36,10 @@ const SignUpPage = () => {
     // console.log(formData);
 
     if (success === true) signup(formData);
+    setTimeout(() => {
+      window.location.href="/login"
+    }, 1500);
+    
   };
 
   return (

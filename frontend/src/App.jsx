@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import Setting from "./pages/Setting";
 import Profile from "./pages/Profile";
 import  {useAuthStore} from "./Store/useAuth.js";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 import "./App.css";
@@ -18,9 +20,10 @@ function App() {
 
   useEffect(() => {
     checkAuth();
+    toast.success("Test Toast - App Loaded!");
   }, []);
 
-  console.log("Print the user details:", authuser,ischeckingauth);
+  // console.log("Print the user details:", authuser,ischeckingauth);
 
   if (ischeckingauth && authuser === null) {
     return (
@@ -32,6 +35,8 @@ function App() {
 
   return (
     <>
+   <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={true} />
+
       <Navbar />
       <Routes>
         <Route path="/" element={authuser?<Homepage />: <Navigate to="/login"/>} />

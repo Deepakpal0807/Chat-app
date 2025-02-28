@@ -6,8 +6,8 @@ import User from "../models/user.model.js"
 export const protectroute=async (req,res,next)=>{
   try {
       const token=req.cookies.jwt;
-      console.log("Searching for token");
-      console.log(token);
+      // console.log("Searching for token");
+      // console.log(token);
       if(!token){
         // console.log("Token are not found..");
         return res.status(401).json({message:"Session Expired! Login Again"})
@@ -19,7 +19,7 @@ export const protectroute=async (req,res,next)=>{
         return res.status(401).json({message:"Session Expired! Login Again"})
       }
       const user=await User.findById(decoded.id).select("-password");
-      console.log(user);
+      // console.log(user);
       req.user=user;
       next();
   } catch (error) {

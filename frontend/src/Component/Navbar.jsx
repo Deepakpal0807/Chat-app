@@ -2,24 +2,23 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../Store/useAuth.js";
 import { LogOut, MessageSquare, Settings, User } from "lucide-react";
 import { axiosInstance } from "../lib/axios.js";
+import {useNavigate } from "react-router-dom"
 
 const Navbar = () => {
-  const { logout, authUser } = useAuthStore();
+  const { logout, authuser } = useAuthStore();
+  const navigate = useNavigate()
   const handlelogout = async () => {
-    try {
-      await axiosInstance.post("/auth/logout"); // Ensure logout request completes
-      // logout(); // Update the auth state
-      
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
+    logout();
+    setTimeout(() => {
+      window.location.href="/login"
+    }, 1500);
   };
   return (
     <header
       className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40 
     backdrop-blur-lg bg-base-100/80"
     >
-<button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg" onClick={handlelogout}>Responsive</button>
+
 
       <div className="container mx-auto px-4 h-16">
         <div className="flex items-center justify-between h-full">
@@ -44,14 +43,14 @@ const Navbar = () => {
               <span className="hidden sm:inline">Settings</span>
             </Link>
 
-            {authUser && (
+            {authuser && (
               <>
                 <Link to={"/profile"} className={`btn btn-sm gap-2`}>
                   <User className="size-5" />
                   <span className="hidden sm:inline">Profile</span>
                 </Link>
 
-                <button className="flex gap-2 items-center" onClick={logout}>
+                <button className="flex gap-2 items-center" onClick={handlelogout}>
                   <LogOut className="size-5" />
                   <span className="hidden sm:inline">Logout</span>
                 </button>
