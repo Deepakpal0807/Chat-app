@@ -1,23 +1,36 @@
-import React from "react";
-import { useChatStore } from "../Store/useChatStore";
-import { useAuthStore } from "../Store/useAuth";
+import React, { useState } from "react";
+import { useChatStore } from "../Store/useChatStore.js";
+import { useAuthStore } from "../Store/useAuth.js";
 import avatar from "../lib/avatar.jpeg";
+import Userprofile from "../pages/Userprofile.jsx"
+import { CodeSquare } from "lucide-react";
 
 const ChatHeader = () => {
-  const { selectedUser, setSelectedUser } = useChatStore();
+  const { selectedUser, setSelectedUser,showprofile ,friendprofile} = useChatStore();
   const { onlineuser } = useAuthStore();
+ 
 
   if (!selectedUser) return null;
+  const handleprofile=(e)=>{
+    console.log(e);
+    console.log("profile clicked");
+    showprofile();
+    // setshowprofile(true);
+  }
+  if(friendprofile){
+    return <Userprofile/>
+  }
+  
 
   return (
     <div className=" p-2.5 border-b border-base-300 border-white w-4xl">
       <div className="flex items-center justify-between ">
         {/* Avatar & User Info */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3" onClick={handleprofile}>
           <div className="avatar">
             <div className="w-10 h-10 rounded-full overflow-hidden">
               <img
-                src={selectedUser.profilePic || avatar}
+                src={selectedUser.profilepic || avatar}
                 alt={selectedUser.name}
                 className="w-full h-full object-cover"
               />

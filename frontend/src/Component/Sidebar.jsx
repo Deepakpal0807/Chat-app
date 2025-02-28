@@ -5,14 +5,16 @@ import avatar from '../lib/avatar.jpeg'
 import { useAuthStore } from '../Store/useAuth.js';
 
 const Sidebar = () => {
-    const {getuser,users,selectedUser,setSelectedUser,isUserloading}=useChatStore();
+    const {getuser,users,selectedUser,setSelectedUser,isUserloading,closeprofileimage,closeprofile}=useChatStore();
     const {onlineuser}=useAuthStore()
      useEffect(() => {
         getuser();
      }, [getuser]);
      if(isUserloading) return <SidebarSkeleton/>
     
-console.log("Avatar Path:", avatar);
+
+   
+
 
 
   return (
@@ -41,7 +43,12 @@ console.log("Avatar Path:", avatar);
         {users.map((user) => (
           <button
             key={user._id}
-            onClick={() => setSelectedUser(user)}
+            onClick={()=>{
+              setSelectedUser(user)
+              closeprofileimage()
+              closeprofile()
+              
+            }}
             className={`
               w-full p-3 flex items-center gap-3
               hover:bg-base-300 transition-colors 
@@ -50,7 +57,7 @@ console.log("Avatar Path:", avatar);
           >
             <div className="relative mx-auto lg:mx-0">
               <img
-                src={user.profilePic || avatar}
+                src={user.profilepic || avatar}
                 alt={Image}
                 className="size-12 object-cover rounded-full"
               />

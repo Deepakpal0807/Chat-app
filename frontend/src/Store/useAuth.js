@@ -81,6 +81,7 @@ export const  useAuthStore=create((set)=>({
 
     },
     updateprofile:async(data)=>{
+        // console.log("Printting the profile image",data)
         set({isupdatingproflie:true});
         
            try {
@@ -101,6 +102,25 @@ export const  useAuthStore=create((set)=>({
 
            }
     },
+    updatename:async(newname)=>{
+        set({isupdatingproflie:true})
+        try {
+            console.log(newname)
+            const res = await axiosInstance.put("/auth/updatename",newname);
+            
+            console.log("Update name response:", res.data);
+            set({authuser:res.data});   
+            toast.success("Name updated successfully");
+            
+        } catch (error) {
+            toast.error(error.response.data.message);
+            
+        }
+        finally{
+            set({isupdatingproflie:false});
+        }
+
+    }
 
 
     

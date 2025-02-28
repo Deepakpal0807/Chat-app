@@ -2,13 +2,29 @@ import {create} from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import {toast} from 'react-toastify'
 
-export const useChatStore=create((set)=>({
-    message:[],
+export const useChatStore=create((set,get)=>({
+    messages:[],
     users:[],
     selectedUser:null,
     isUserloading:false,
     isMessageloading:false,
+    updatemessage:false,
+    friendprofile:false,
+    showimage:false,
     
+    showprofile:()=>{
+        set({friendprofile:true})
+    },
+    closeprofile:()=>{
+      set({friendprofile:false})
+    },
+    showprofileimage:()=>{
+        set({showimage:true})
+    },
+    closeprofileimage:()=>{
+      
+        set({showimage:false})
+    }   , 
 
     getuser: async()=>{
         
@@ -28,10 +44,14 @@ export const useChatStore=create((set)=>({
     },
 
     getMessage:async(userId)=>{
+        // console.log(userId)
         set({isMessageloading:true})
         try {
             const res=await axiosInstance.get(`/message/${userId}`);
-            set({message:res.data})
+            console.log(res.data);
+
+        
+    set({ messages: res.data });
             
         } catch (error) {
             console.log(error);
@@ -46,6 +66,26 @@ export const useChatStore=create((set)=>({
 
     setSelectedUser:(user)=>{
         set({selectedUser:user});
-    }
+    },
+    sendMessage: async (data) => {
+        
+        // console.log(data);
+        const { selectedUser, messages } = get();
+        try {
+            const res = await axiosInstance.post(`/message/send/${selectedUser._id}`, data);
+            set({updatemessage:true})
+            set({ messages: [...messages, res.data] }); // 
+            set({updatemessage:false})
+            // Use res.data instead of res
+            // console.log("Message sent:", res.data);
+        } catch (error) {
+            console.error("Axios Error:", error.response ? error.response.data : error.message);
+            toast.error("Error sending message in chatstore");
+        }
+        finally{
+            
+        }
+    },
+    
 
 }))

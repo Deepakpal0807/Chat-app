@@ -110,14 +110,27 @@ export const login= async(req,res)=>{
 export const updateprofilephoto=async(req,res)=>{
  try {
     const id=req.user._id;
-    const {profilepic}=req.body;
-    console.log(profilepic);
-    if(!profilepic){
+    const {profilePic}=req.body;
+    console.log(req.body);
+    if(!profilePic){
         return res.status(400).json({message:"Profile picture is required"});
     }
+ 
+    
+         let imageurl = ""; // Use let instead of const
+        
+                if (profilePic) {
+                    try {
+                        const url = await cloudinary.uploader.upload(profilePic);
+                        imageurl = url.secure_url;
+                    } catch (uploadError) {
+                        console.error("Image upload failed:", uploadError);
+                        return res.status(500).json({ message: "Image upload failed", error: uploadError });
+                    }
+                }
 
-    const image=await cloudinary.uploader.upload(profilepic);
-    const user=await User.findByIdAndUpdate(id,{profilepic:image.secure_url},{new:true});
+
+    const user=await User.findByIdAndUpdate(id,{profilepic:imageurl},{new:true});
     return res.status(200).json({message:"Profile picture updated successfully"});  
     
     
@@ -142,14 +155,16 @@ export const updatename=async (req,res)=>{
     try {
         const id=req.user._id;
         const {newname}=req.body;
-        const user=await User.findOneAndUpdate({email},{$set:{name:newname}});
+        const user=await User.findByIdAndUpdate(id,{name:newname},{new:true});
         if(!user){
             return res.status(400).json({message:"User not found"});
-            }
+         }
+         return res.status(200).json(user);
 
 
 
     } catch (error) {
+        console.log("some error in update name controller..  ", error);
         
     }
 }
