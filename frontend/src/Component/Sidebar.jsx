@@ -3,14 +3,22 @@ import { useChatStore } from '../Store/useChatStore.js'
 import SidebarSkeleton from './Skeltons/SidebarSkeleton.jsx';
 import avatar from '../lib/avatar.jpeg'
 import { useAuthStore } from '../Store/useAuth.js';
+import { useState } from 'react';
 
 const Sidebar = () => {
     const {getuser,users,selectedUser,setSelectedUser,isUserloading,closeprofileimage,closeprofile}=useChatStore();
     const {onlineuser}=useAuthStore()
+    const [showOnlineOnly,setShowOnlineOnly]=useState(false);
      useEffect(() => {
         getuser();
      }, [getuser]);
      if(isUserloading) return <SidebarSkeleton/>
+
+     const filteredUsers = showOnlineOnly
+    ? users.filter(user =>onlineuser.includes(user._id)) // Only online users
+    : users; // Show all users
+
+
     
 
    
@@ -25,7 +33,7 @@ const Sidebar = () => {
           <span className="font-medium hidden lg:block">Contacts</span>
         </div>
         {/* TODO: Online filter toggle */}
-        {/* <div className="mt-3 hidden lg:flex items-center gap-2">
+        <div className="mt-3 hidden lg:flex items-center gap-2">
           <label className="cursor-pointer flex items-center gap-2">
             <input
               type="checkbox"
@@ -35,12 +43,12 @@ const Sidebar = () => {
             />
             <span className="text-sm">Show online only</span>
           </label>
-          <span className="text-xs text-zinc-500">({onlineUsers.length - 1} online)</span>
-        </div> */}
+          <span className="text-xs text-zinc-500">({onlineuser.length - 1} online)</span>
+        </div>
 
       </div>
       <div className="overflow-y-auto w-full py-3">
-        {users.map((user) => (
+        {filteredUsers.map((user) => (
           <button
             key={user._id}
             onClick={()=>{
