@@ -30,9 +30,10 @@ export const useAuthStore = create((set, get) => ({
     signup: async (data) => {
         set({ issigningup: true });
         try {
+            // console.log(data);
             const res = await axiosInstance.post("/auth/signup", data);
             toast.success("Account created successfully");
-            get().connectSocket(); 1
+            get().connectSocket(); 
         } catch (error) {
             toast.error(error.response?.data?.message || "Signup failed");
         } finally {
@@ -67,7 +68,8 @@ export const useAuthStore = create((set, get) => ({
         set({ isupdatingproflie: true });
         try {
             const res = await axiosInstance.put("/auth/updateprofilephoto", data);
-            set({ authuser: res.data });
+            set({ authuser: res.data.user });
+            
             toast.success("Profile updated successfully");
         } catch (error) {
             toast.error(error.response?.data?.message || "Profile update failed");
@@ -107,6 +109,7 @@ export const useAuthStore = create((set, get) => ({
 
         newSocket.on("connect", () => {
             // console.log("Socket connected:", newSocket.id);
+            
             set({ socket: newSocket }); // ✅ Save socket in state
         });
         newSocket.on("getonlineuser",(users)=>{

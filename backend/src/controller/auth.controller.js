@@ -6,9 +6,12 @@ import cloudinary from "../utils/cloudinary.js";
  export const signup= async(req,res)=>{
     const {name,email,password}=req.body;
     // console.log(req.body);
+    
     try {
+       
         if(!name || !email || !password){
-            return res.status(400).json({message:"All field are required"});
+           
+            return res.status(400).json({message:"All field are required plz do it"});
         }
         if(password.length < 6){
         return res.status(400).json({message:" Password must be atleast of size 6"});
@@ -53,7 +56,7 @@ import cloudinary from "../utils/cloudinary.js";
             
                 
     } catch (error) {
-        // console.log("some error in signup controller..  ", error);
+        console.log("some error in signup controller..  ", error);
         return res.status(400).json({message:"Error in creating a user"});
     }
    
@@ -131,7 +134,7 @@ export const updateprofilephoto=async(req,res)=>{
 
 
     const user=await User.findByIdAndUpdate(id,{profilepic:imageurl},{new:true});
-    return res.status(200).json({message:"Profile picture updated successfully"});  
+    return res.status(200).json({user});  
     
     
  } catch (error) {

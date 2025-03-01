@@ -51,7 +51,7 @@ const ChatContainer = () => {
 
   return (
     <div className="flex flex-col w-full mb-4">
-      <div className="h-[10vh] bg-gray-900 text-1white ">
+      <div className="h-[11vh] bg-gray-900 text-1white ">
         <ChatHeader />
       </div>
 
@@ -72,14 +72,14 @@ const ChatContainer = () => {
                 ref={isLastMessage ? messageEndRef : null}
               >
                 <div className="chat-image avatar">
-                  <div className="size-10 rounded-full border">
+                  <div className="size-12 rounded-full border">
                     <img
                       src={isSentByAuthUser ? authuser?.profilepic || avatar : selectedUser?.profilepic || avatar}
                       alt="profile pic"
                     />
                   </div>
                 </div>
-                <div className="chat-header mb-1 text-gray-400">
+                <div className="chat-header mb-1.5 text-gray-400">
                   <time className="text-xs opacity-75 ml-1">
                     {formatMessageTime(message.createdAt)}
                   </time>
@@ -97,7 +97,7 @@ const ChatContainer = () => {
         <div ref={messageEndRef}></div>
       </div>
 
-      <div className="h-8vh] bg-gray-900 text-white">
+      <div className="h-[8vh] bg-gray-900 text-white">
         <MessageInput />
       </div>
     </div>

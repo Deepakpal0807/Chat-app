@@ -23,16 +23,16 @@ const ChatHeader = () => {
   
 
   return (
-    <div className="p-3 -mb-2 border-b border-base-300 border-white w-4xl">
-      <div className="flex items-center justify-between ">
-        {/* Avatar & User Info */}
+    <div className="p-3  border-b border-base-300 border-white w-full">
+      <div className="flex items-center justify-between mb-3">
+       
         <div className="flex items-center gap-3" onClick={handleprofile}>
           <div className="avatar">
-            <div className="w-10 h-10 rounded-full overflow-hidden">
+            <div className="w-13 h-13 rounded-full overflow-hidden border border-white">
               <img
                 src={selectedUser.profilepic || avatar}
                 alt={selectedUser.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover "
               />
             </div>
           </div>

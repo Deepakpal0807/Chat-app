@@ -87,19 +87,27 @@ export const useChatStore=create((set,get)=>({
             
         }
     },
-    subscribetomessage:()=>{
-        // console.log("subscribetomessage");
-        const { selectedUser, messages } = get();
-        if(!selectedUser)return ;
-        const socket=useAuthStore.getState().socket;
-        socket.on("newmessage",(data)=>{
-            if(data.senderId!=selectedUser._id)return ;
+    subscribetomessage: () => {
+        const { selectedUser } = get();
+        if (!selectedUser) return;
+    
+        const socket = useAuthStore.getState().socket;
+    
+        // Remove any previous event listeners before adding a new one
+        socket.off("newmessage");
+    
+        socket.on("newmessage", (data) => {
+            console.log("Messagedata ", data.senderId);
+            console.log("AuthUser data", selectedUser._id);
+    
+            if (data.senderId !== selectedUser._id) return;
+    
             set({
                 messages: [...get().messages, data],
-            })
-            // console.log(data);
-        })
+            });
+        });
     },
+    
     unsubscribetomessage:()=>{
         // console.log("unsubscribetomessage");
         const { selectedUser, messages } = get();
