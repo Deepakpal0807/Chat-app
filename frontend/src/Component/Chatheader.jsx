@@ -12,8 +12,8 @@ const ChatHeader = () => {
 
   if (!selectedUser) return null;
   const handleprofile=(e)=>{
-    console.log(e);
-    console.log("profile clicked");
+    // console.log(e);
+   
     showprofile();
     // setshowprofile(true);
   }
@@ -23,7 +23,7 @@ const ChatHeader = () => {
   
 
   return (
-    <div className=" p-2.5 border-b border-base-300 border-white w-4xl">
+    <div className="p-3 -mb-2 border-b border-base-300 border-white w-4xl">
       <div className="flex items-center justify-between ">
         {/* Avatar & User Info */}
         <div className="flex items-center gap-3" onClick={handleprofile}>

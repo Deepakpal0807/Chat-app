@@ -53,7 +53,7 @@ import cloudinary from "../utils/cloudinary.js";
             
                 
     } catch (error) {
-        console.log("some error in signup controller..  ", error);
+        // console.log("some error in signup controller..  ", error);
         return res.status(400).json({message:"Error in creating a user"});
     }
    
@@ -86,7 +86,7 @@ export const login= async(req,res)=>{
 
         
     } catch (error) {
-        console.log("some error in login controller..  ", error);
+        // console.log("some error in login controller..  ", error);
         return res.status(400).json({message:"Error in logging in a user"});        
     }
 
@@ -98,7 +98,7 @@ export const login= async(req,res)=>{
         })
         return res.status(200).json({message:"User logged out successfully"});
     } catch (error) {
-        console.log("some error in logout controller..  ", error);
+        // console.log("some error in logout controller..  ", error);
         return res.status(400).json({message:"Error in logging out a user"});
         
         
@@ -111,7 +111,7 @@ export const updateprofilephoto=async(req,res)=>{
  try {
     const id=req.user._id;
     const {profilePic}=req.body;
-    console.log(req.body);
+    // console.log(req.body);
     if(!profilePic){
         return res.status(400).json({message:"Profile picture is required"});
     }
@@ -135,7 +135,7 @@ export const updateprofilephoto=async(req,res)=>{
     
     
  } catch (error) {
-    console.log("some error in update profile controller..  ", error);
+    // console.log("some error in update profile controller..  ", error);
     return res.status(401).json({message:"Error in updating the user profile"});
     
  }
@@ -146,7 +146,7 @@ export const checkauth=(req,res)=>{
         return res.status(200).json(req.user);
         
     } catch (error) {
-        console.log("some error in check auth controller..  ", error);
+        // console.log("some error in check auth controller..  ", error);
         return res.status(401).json({message:"Error in checking the user authentication"});        
     }
 }
@@ -164,7 +164,9 @@ export const updatename=async (req,res)=>{
 
 
     } catch (error) {
-        console.log("some error in update name controller..  ", error);
+        // console.log("some error in update name controller..  ", error);
+    
+        return res.status(401).json({message:"Error in updating the user name"});
         
     }
 }

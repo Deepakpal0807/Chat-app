@@ -18,7 +18,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(formData);
-    console.log("Redirect to home page");
+    // console.log("Redirect to home page");
     setTimeout(() => window.location.href="/login", 1500);
 
   };

@@ -47,7 +47,7 @@ export const sendmessage = async (req, res) => {
         const senderId = new mongoose.Types.ObjectId(req.user._id);
         const receiverId = new mongoose.Types.ObjectId(req.params.id);
         const { text, image } = req.body;
-        console.log(req.body);
+        // console.log(req.body);
 
         let imageurl = ""; // Use let instead of const
 

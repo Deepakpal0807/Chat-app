@@ -17,7 +17,7 @@ import "./App.css";
 
 function App() {
   const { authuser, checkAuth, ischeckingauth,onlineuser } = useAuthStore();
-  console.log("Oneline User",onlineuser);
+  // console.log("Oneline User",onlineuser);
 
   useEffect(() => {
     checkAuth();

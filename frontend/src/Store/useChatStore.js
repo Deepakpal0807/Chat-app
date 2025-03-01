@@ -35,7 +35,7 @@ export const useChatStore=create((set,get)=>({
             set({users:response.data})            
             
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error('Error fetching users')
             
         }
@@ -49,13 +49,13 @@ export const useChatStore=create((set,get)=>({
         set({isMessageloading:true})
         try {
             const res=await axiosInstance.get(`/message/${userId}`);
-            console.log(res.data);
+            // console.log(res.data);
 
         
     set({ messages: res.data });
             
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error('Error fetching messages')
             
         }
@@ -93,6 +93,7 @@ export const useChatStore=create((set,get)=>({
         if(!selectedUser)return ;
         const socket=useAuthStore.getState().socket;
         socket.on("newmessage",(data)=>{
+            if(data.senderId!=selectedUser._id)return ;
             set({
                 messages: [...get().messages, data],
             })
