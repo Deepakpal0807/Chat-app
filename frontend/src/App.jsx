@@ -16,12 +16,13 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 function App() {
-  const { authuser, checkAuth, ischeckingauth } = useAuthStore();
+  const { authuser, checkAuth, ischeckingauth,onlineuser } = useAuthStore();
+  console.log("Oneline User",onlineuser);
 
   useEffect(() => {
     checkAuth();
-    toast.success("Test Toast - App Loaded!");
-  }, []);
+    // toast.success("Test Toast - App Loaded!");
+  }, [checkAuth]);
 
   // console.log("Print the user details:", authuser,ischeckingauth);
 

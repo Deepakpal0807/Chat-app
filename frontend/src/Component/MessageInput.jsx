@@ -39,7 +39,7 @@ const MessageInput = () => {
         image: imagePreview,
       });
       
-      // getMessage(selectedUser._id);
+      getMessage(selectedUser._id);
       // Clear form
       setText("");
       setImagePreview(null);

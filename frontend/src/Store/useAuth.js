@@ -1,25 +1,25 @@
-import {create} from "zustand";
+import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
+import { io } from "socket.io-client";
 
+const baseurl = "http://localhost:5000"; 
+export const useAuthStore = create((set, get) => ({
+    authuser: null,
+    issignup: false,
+    issigningup: false,
+    islogin: false,
+    isloggingin: false,
+    isupdatingproflie: false,
+    ischeckingauth: true,
+    onlineuser: [],
+    socket: null, 
 
-export const  useAuthStore=create((set)=>({
-    
-    authuser:null,
-    issignup:false,
-    issigningup:false,
-    islogin:false,
-    isloggingin:false,
-    isupdatingproflie:false,
-    ischeckingauth:true,
-    onlineuser:[],
- 
     checkAuth: async () => {
         try {
-            console.log("Inside the useauth function")
             const res = await axiosInstance.get("/auth/check");
-            console.log("Auth response:", res.data);
             set({ authuser: res.data });
+            get().connectSocket(); 
         } catch (error) {
             console.error("Error in checkAuth:", error.response?.data || error.message);
         } finally {
@@ -27,102 +27,101 @@ export const  useAuthStore=create((set)=>({
         }
     },
 
-    signup: async(data)=>{
-        
-        set({issigningup:true});
-        console.log(data);
+    signup: async (data) => {
+        set({ issigningup: true });
         try {
-           
-            const name=data.fullName;
-            const email=data.email;
-            const password=data.password;
-           
-            const res = await axiosInstance.post("/auth/signup",{name,email,password});
-            console.log("Signup response:", res.data);
-           toast.success("Account created successfully");
-        //    setTimeout(() => navigate("/"), 1500);
-            
+            const res = await axiosInstance.post("/auth/signup", data);
+            toast.success("Account created successfully");
+            get().connectSocket(); 1
         } catch (error) {
-            toast.error(error.response.data.message);
-            
-        }finally{
-            set({issigningup:false});
+            toast.error(error.response?.data?.message || "Signup failed");
+        } finally {
+            set({ issigningup: false });
         }
     },
-    login:async(data)=>{
 
-        set({islogginin:true})
+    login: async (data) => {
+        set({ isloggingin: true });
         try {
-            const email=data.email;
-            const password=data.password;
-            const a=await axiosInstance.post("/auth/login",{email,password});
-            console.log("Login response:", a);
+            const res = await axiosInstance.post("/auth/login", data);
             toast.success("Logged in successfully");
-
-            
+            get().connectSocket(); 
         } catch (error) {
-            toast.error(error.response.data.message);
-            
-        }finally{
-            set({islogginin:false});
+            toast.error(error.response?.data?.message || "Login failed");
+        } finally {
+            set({ isloggingin: false });
         }
-    }
-    ,
-    logout:async()=>{
-         try {
-            const res = await axiosInstance.post("/auth/logout");
-            console.log("Logout response:", res.data);
-            toast.success("Logged out successfully");
-            // setTimeout(() => navigate("/login"), 1500); 
-            
-         } catch (error) {
-            toast.error(error.response.data.message);            
-         }
-
     },
-    updateprofile:async(data)=>{
-        // console.log("Printting the profile image",data)
-        set({isupdatingproflie:true});
-        
-           try {
-            console.log(data);
-            const res = await axiosInstance.put("/auth/updateprofilephoto",data);
-            console.log("Update profile response:", res.data);
-            set({authuser:res.data});
-            toast.success("Profile updated successfully");
-            // setTimeout(() => navigate("/"), 1500);
 
-            
-           } catch (error) {
-            toast.error(error.response.data.message);
-            
-           }
-           finally{
-            set({isupdatingproflie:false});
-
-           }
-    },
-    updatename:async(newname)=>{
-        set({isupdatingproflie:true})
+    logout: async () => {
         try {
-            console.log(newname)
-            const res = await axiosInstance.put("/auth/updatename",newname);
-            
-            console.log("Update name response:", res.data);
-            set({authuser:res.data});   
-            toast.success("Name updated successfully");
-            
+            await axiosInstance.post("/auth/logout");
+            toast.success("Logged out successfully");
+            get().disconnectSocket();
         } catch (error) {
-            toast.error(error.response.data.message);
-            
+            toast.error(error.response?.data?.message || "Logout failed");
         }
-        finally{
-            set({isupdatingproflie:false});
+    },
+
+    updateprofile: async (data) => {
+        set({ isupdatingproflie: true });
+        try {
+            const res = await axiosInstance.put("/auth/updateprofilephoto", data);
+            set({ authuser: res.data });
+            toast.success("Profile updated successfully");
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Profile update failed");
+        } finally {
+            set({ isupdatingproflie: false });
         }
+    },
 
-    }
+    updatename: async (newname) => {
+        set({ isupdatingproflie: true });
+        try {
+            const res = await axiosInstance.put("/auth/updatename", { name: newname });
+            set({ authuser: res.data });
+            toast.success("Name updated successfully");
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Name update failed");
+        } finally {
+            set({ isupdatingproflie: false });
+        }
+    },
 
+    connectSocket: () => {
+        const { authuser, socket } = get();
+        if (!authuser || socket?.connected) return;
 
-    
+        console.log("Connecting to socket...");
+ 
+        const newSocket = io(baseurl, {
+            withCredentials: true,
+            query:{
+                user: authuser._id
+            }
+        });
 
+        newSocket.on("connect", () => {
+            console.log("Socket connected:", newSocket.id);
+            set({ socket: newSocket }); // ✅ Save socket in state
+        });
+        newSocket.on("getonlineuser",(users)=>{
+            set({ onlineuser: users });
+        })
+
+        newSocket.on("disconnect", () => {
+            console.log("Socket disconnected");
+            set({ socket: null });
+        });
+    },
+
+    disconnectSocket: () => {
+        const { socket } = get();
+        if (socket) {
+            console.log("Disconnecting socket...");
+            socket.disconnect();
+            set({ socket: null });
+        }
+    },
 }));

@@ -2,6 +2,8 @@ import User from "../models/user.model.js"
 import Message from "../models/message.model.js"
 import cloudinary from "../utils/cloudinary.js"
 import mongoose from "mongoose"
+import { getReceiverSocketId } from "../utils/socket.js"
+import {io} from "../utils/socket.js"
 
 export const getuserforsidebar=async(req,res)=>{
     try {
@@ -71,6 +73,10 @@ export const sendmessage = async (req, res) => {
 
         await newmessage.save();
         // console.log(newmessage);
+        const receiversocketid= getReceiverSocketId(receiverId);
+        if(receiversocketid){
+            io.to(receiversocketid).emit("newmessage",newmessage);
+        }
 
         res.status(201).json({newmessage});
 
@@ -79,3 +85,4 @@ export const sendmessage = async (req, res) => {
         res.status(500).json({ message: "Error sending message", error });
     }
 };
+
