@@ -79,7 +79,10 @@ export const useAuthStore = create((set, get) => ({
     updatename: async (newname) => {
         set({ isupdatingproflie: true });
         try {
-            const res = await axiosInstance.put("/auth/updatename", { name: newname });
+            
+            const res = await axiosInstance.put("/auth/updatename", {newname });
+            ;
+            console.log(res);
             set({ authuser: res.data });
             toast.success("Name updated successfully");
         } catch (error) {

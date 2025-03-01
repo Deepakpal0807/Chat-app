@@ -152,10 +152,13 @@ export const checkauth=(req,res)=>{
 }
 
 export const updatename=async (req,res)=>{
+   
     try {
         const id=req.user._id;
+        // console.log("req bdoy",req.body);
         const {newname}=req.body;
-        const user=await User.findByIdAndUpdate(id,{name:newname},{new:true});
+
+        const user=await User.findByIdAndUpdate(id,{name:newname.newname},{new:true});
         if(!user){
             return res.status(400).json({message:"User not found"});
          }
