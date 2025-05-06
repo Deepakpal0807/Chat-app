@@ -5,7 +5,7 @@ import avatar from "../lib/avatar.jpeg";
 import Userprofile from "../pages/Userprofile.jsx"
 import { CodeSquare } from "lucide-react";
 
-const ChatHeader = () => {
+const Chatheader = () => {
   const { selectedUser, setSelectedUser,showprofile ,friendprofile} = useChatStore();
   const { onlineuser } = useAuthStore();
  
@@ -56,4 +56,4 @@ const ChatHeader = () => {
   );
 };
 
-export default ChatHeader;
+export default Chatheader;

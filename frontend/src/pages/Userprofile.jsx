@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import {useAuthStore} from "../Store/useAuth.js"
-import { useChatStore } from '../store/useChatStore.js';
+import { useChatStore } from '../Store/useChatStore.js';
 import { Camera, Mail, User,X } from "lucide-react";
 import avatar from "../lib/avatar.jpeg"
 import Showprofile from '../Component/Showprofile.jsx';

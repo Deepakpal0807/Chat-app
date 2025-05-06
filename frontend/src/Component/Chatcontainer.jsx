@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
-import { useChatStore } from "../store/useChatStore";
+import { useChatStore } from "../Store/useChatStore";
 import { useAuthStore } from "../Store/useAuth.js";
-import ChatHeader from "./ChatHeader";
+import Chatheader from "./Chatheader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./Skeltons/Chatskelton";
 import avatar from "../lib/avatar.jpeg";
@@ -37,7 +37,7 @@ const ChatContainer = () => {
     return (
       <div className="flex flex-col h-full">
         <div className="h-[10%] bg-gray-900 text-white shadow-md">
-          <ChatHeader />
+          <Chatheader />
         </div>
         <div className="flex-1 overflow-y-auto px-4 py-2 bg-gray-800">
           <MessageSkeleton />
@@ -52,7 +52,7 @@ const ChatContainer = () => {
   return (
     <div className="flex flex-col w-full mb-4">
       <div className="h-[11vh] bg-gray-900 text-1white ">
-        <ChatHeader />
+        <Chatheader />
       </div>
 
       <div className="h-[72vh] overflow-y-auto px-4 py-2 bg-gray-800">

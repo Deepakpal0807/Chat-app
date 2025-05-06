@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useChatStore } from "../store/useChatStore.js";
+import { useChatStore } from "../Store/useChatStore.js";
 import { X } from "lucide-react";
 import avatar from "../lib/avatar.jpeg";
 

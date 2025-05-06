@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuthStore } from "../Store/useAuth.js";
 import { Camera, Mail, User, Edit2, Check } from "lucide-react";
 import Showprofile from '../Component/Showprofile.jsx';
-import { useChatStore } from '../store/useChatStore.js';
+import { useChatStore } from '../Store/useChatStore.js';
 
 
 const Profile = () => {
