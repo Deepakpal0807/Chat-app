@@ -3,7 +3,7 @@ import { useAuthStore } from "../Store/useAuth.js";
 import { LogOut, MessageSquare, Settings, User } from "lucide-react";
 import { axiosInstance } from "../lib/axios.js";
 import {useNavigate } from "react-router-dom"
-import { useChatStore } from "../store/useChatStore.js";
+import { useChatStore } from "../Store/useChatStore.js";
 
 const Navbar = () => {
   const { logout, authuser } = useAuthStore();
