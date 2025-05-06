@@ -3,7 +3,7 @@ import { axiosInstance } from "../lib/axios.js";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
-const baseurl = "http://localhost:5000"; 
+const baseurl = "https://chat-app-9mf1.onrender.com/"; 
 export const useAuthStore = create((set, get) => ({
     authuser: null,
     issignup: false,
